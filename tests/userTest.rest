@@ -1,0 +1,23 @@
+POST  http://localhost:3500/sign-up 
+Content-Type: application/json
+
+{
+    "username" : "sanjai",
+    "password" : "sanjai123",
+    "email" : "sanjai@gamil.com"
+}
+###
+GET http://localhost:3500/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcmlmeSI6eyJ1c2VyIjoic2FuamFpIiwiaWF0IjoxNjg5MDk3ODE3LCJleHAiOjE2ODkwOTc5Mzd9LCJpYXQiOjE2ODkwOTc4MzksImV4cCI6MTY4OTA5Nzg2OX0.eBVo1cPWGJHwkM9xBuGe3kGwvp4EkTaVpjxSQ-B_06k
+
+###
+GET http://localhost:3500/refresh 
+
+###
+POST http://localhost:3500/login 
+Content-Type: application/json
+
+{
+    "username" : "shibu",
+    "password" : "rinju123"
+}
