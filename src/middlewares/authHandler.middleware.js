@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const httpErrors = require('http-errors')
+const refreshTokenModel = require('../models/refreshToken.Model')
 
 function isAuthenticated(req,res,next){
     try {
@@ -16,10 +17,14 @@ function isAuthenticated(req,res,next){
     }
      
 }
-function refreshTokenVerify(req,res,next){
+async function refreshTokenVerify(req,res,next){
     try {
-        const cookie = req.cookies
-        const refreshToken = cookie.jwt
+        const userId = req.params.id
+        console.log(userId)
+        //const cookie = req.cookies
+        const getrefreshToken = await refreshTokenModel.find({userId},{userId:0,_id:0,__v:0})
+        console.log(getrefreshToken)
+        const refreshToken = getrefreshToken.refreshToken
         const tokenVerify = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
         const accessToken = jwt.sign(
             {tokenVerify},

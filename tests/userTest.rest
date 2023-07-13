@@ -2,22 +2,33 @@ POST  http://localhost:3500/sign-up
 Content-Type: application/json
 
 {
-    "username" : "sanjai",
-    "password" : "sanjai123",
-    "email" : "sanjai@gamil.com"
+    "username" : "krishna",
+    "address" : "krishna house",
+    "phone_no" : "krish@gamil.com",
+    "password" : "krish@123"
 }
 ###
-GET http://localhost:3500/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblZlcmlmeSI6eyJ1c2VyIjoic2FuamFpIiwiaWF0IjoxNjg5MDk3ODE3LCJleHAiOjE2ODkwOTc5Mzd9LCJpYXQiOjE2ODkwOTc4MzksImV4cCI6MTY4OTA5Nzg2OX0.eBVo1cPWGJHwkM9xBuGe3kGwvp4EkTaVpjxSQ-B_06k
+GET http://localhost:3500/64ae9a4eeec5aff728cd0a85
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGFmYjlhZTBiMzMyMThhMDRiOTllODkiLCJpYXQiOjE2ODkyNDMxNjksImV4cCI6MTY4OTI0MzIyOX0.X9YsurS1Yhx5NMURdLTkaC2DOWuD8_5NSgqR7i0xWuU
+###
+GET http://localhost:3500/refresh/64ae88c55b070737a8ca965d
 
 ###
-GET http://localhost:3500/refresh 
-
-###
-POST http://localhost:3500/login 
+PUT  http://localhost:3500/update/64ae9d195a6e5d6b1043997e
 Content-Type: application/json
 
 {
-    "username" : "shibu",
-    "password" : "rinju123"
+    "name" : "rijin",
+    "address" : "rijin@234"
 }
+
+###
+POST http://localhost:3500/login/64afb9ae0b33218a04b99e89
+Content-Type: application/json
+
+{
+    "username" : "krishna",
+    "password" : "krish@123"
+}
+
+###
