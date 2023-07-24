@@ -1,14 +1,12 @@
 const httpErrors = require('http-errors')
 const userServices = require('../services/userServices')
-const userModel = require('../models/user.model')
-const refreshTokenModel = require('../models/refreshToken.Model')
+const authhandler = require('../middlewares/authHandler.middleware')
 
 async function getUser(req, res, next){
     try {
-        const payload = {
-            _id : req.params.id
-        }
-        const userData = await userServices.readUser(payload)
+        console.log(req.user)
+        const userPayload = req.user
+        const userData = await userServices.readUser(userId)
         res.send({userData})
     } catch (err) {
         console.log(err)
@@ -20,11 +18,11 @@ async function createUser(req,res,next){
     try {
         const signupPayload = {
             username : req.body.username,
-            address : req.body.address,
-            phone_no : req.body.phone_no,
+            email : req.body.email,
             password : req.body.password
         }
         const signupData = await userServices.newUser(signupPayload)
+        res.send(signupData)
     } catch (err) {
         console.log(err)
         const signupError = httpErrors(401,'User Registration failed!');
@@ -34,29 +32,13 @@ async function createUser(req,res,next){
 
 async function generateTokens(req,res,next) {
     try {
-        
+        console.log(req.params)
         const userId = req.params.id
+        console.log("controller",userId)
         const getToken = await userServices.generateTokens(userId)
         const refreshToken = getToken.refreshToken
         const accessToken = getToken.accessToken
         res.cookie('jwt', refreshToken, {httpOnly : true, maxAge : 24*60*60*1000});
-        const find_user = await refreshTokenModel.findOne({userId})
-        if(!find_user){
-            const saveToken = await new refreshTokenModel({
-                userId : userId,
-                refreshToken : refreshToken,
-            })
-            console.log("the user not existed so created")
-            await saveToken.save();
-        }else{
-            const saveNewToken = await refreshTokenModel.findOneAndUpdate(
-                {userId : userId },
-                {refreshToken : refreshToken },
-                {upsert: true, new: true}
-            )
-            console.log("the user is existed so token is replaced")
-            await saveNewToken.save();
-        }
         res.send({accessToken,refreshToken})
     } catch (err) {
         console.log(err)

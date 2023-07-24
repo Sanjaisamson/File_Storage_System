@@ -4,7 +4,8 @@ const userController = require('../controllers/userController')
 const authhandler = require('../middlewares/authHandler.middleware')
 const loginHandler = require('../middlewares/loginHandler.middleware')
 
-userRouter.get('/:id',authhandler.isAuthenticated, userController.getUser)
+
+userRouter.get('/',authhandler.isAuthenticated, userController.getUser)
 userRouter.get('/refresh/:id',authhandler.refreshTokenVerify)
 userRouter.post('/sign-up',userController.createUser)
 userRouter.post('/login/:id',loginHandler.isVerified,userController.generateTokens)

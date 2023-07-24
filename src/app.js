@@ -3,18 +3,23 @@ const fs = require('fs')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const userRouter = require('./routes/userRouter')
+const itemRouter = require('./routes/itemRouter')
 const { errorHandler } = require('./middlewares/errorHandler.middleware')
+
 const app = express();
 const dbConnection = require('./config/dbConnection')
 const connectDB = require('./config/dbConnection')
 
+
 const PORT  = process.env.PORT || 3500
 
 connectDB();
+
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/', userRouter);
+app.use('/user', userRouter);
+app.use('/items', itemRouter)
 app.use(errorHandler)
 
 app.listen(PORT, () =>{

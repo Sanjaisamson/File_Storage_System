@@ -1,0 +1,42 @@
+###
+POST  http://localhost:3500/files/upload
+
+###
+POST  http://localhost:3500/items/create-folder 
+Content-Type: application/json
+
+{
+    "userId" : "b1e657f0-d298-4cf6-8598-16451c248805"
+}
+###
+###
+POST http://localhost:3500/items/new-folder 
+Content-Type: application/json
+
+{
+    "userId" : "b1e657f0-d298-4cf6-8598-16451c248805",
+    "foldername" :"second-folder"
+}
+###
+###
+POST http://localhost:3500/items/share-item
+Content-Type: application/json
+
+{
+    "ownerId": "sibinbabu@gmail",
+    "userMailId" : "sanjai@gmail",
+    "itemId" : "fad69702-ac45-4f55-b3d0-16b62495971f",
+    "permissionValue" : {
+        "p" : "1"
+    }
+}
+###
+###
+POST http://localhost:3500/items/access-item
+Content-Type: application/json
+
+{
+    "ownerId": "sibinbabu@gmail",
+    "userMailId" : "sanjai@gmail",
+    "itemId" : "fad69702-ac45-4f55-b3d0-16b62495971f"  
+}

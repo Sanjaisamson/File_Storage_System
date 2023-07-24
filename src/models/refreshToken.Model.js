@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const refreshtokenSchema = mongoose.Schema(
     {
         userId : {
-            type : mongoose.Schema.Types.ObjectId,
+            type : mongoose.Schema.Types.String,
             ref :"userData"
         },
         refreshToken : {

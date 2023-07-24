@@ -3,19 +3,23 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const httpErrors = require('http-errors')
 const refreshTokenModel = require('../models/refreshToken.Model')
+const userModel = require('../models/user.model')
 
-function isAuthenticated(req,res,next){
+async function isAuthenticated(req,res,next){
     try {
         const authHeader = req.headers['authorization'];
         const bearerLessToken = authHeader.split(' ')[1]
         const authVerify = jwt.verify(bearerLessToken, process.env.ACCESS_TOKEN_SECRET)
+        const userId = authVerify.userId
+        console.log(userId)
+        const authenticatedUser = await userModel.findOne({_id : userId})
+        req.user = authenticatedUser
         next()
     } catch (err) {
         console.log(err)
         const authError = httpErrors(402,"authentication failed!")
         next(authError)
     }
-     
 }
 async function refreshTokenVerify(req,res,next){
     try {

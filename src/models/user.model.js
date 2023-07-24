@@ -1,18 +1,19 @@
 const mongoose = require('mongoose')
+const { v4: uuidv4 } = require('uuid');
 
 const userDataSchema = mongoose.Schema(
     {
+        _id : {
+            type : String,
+            default : uuidv4
+        },
         name : {
             type : String,
             require:[true, "please fill the name"]
         },
-        address : {
+        email : {
             type : String,
-            require:[true, "please fill the address"]
-        },
-        phoneno : {
-            type : String,
-            require:[true, "please fill the phone number"]
+            require:[true, "please fill the email"]
         },
         password : {
             type : String,
