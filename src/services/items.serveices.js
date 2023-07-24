@@ -5,6 +5,8 @@ const itemModel = require('../models/items.model');
 const userModel = require('../models/user.model')
 const defaultStoragePath = require('../config/defaultStoragePath');
 const permissionModel = require('../models/permission.model')
+const permissionService = require('../services/permission.services')
+const {PERMISSIONS} = require('../const/permission.const')
 const defaultDir = defaultStoragePath
 
 async function createRootFolder(reqPayload){
@@ -139,17 +141,68 @@ async function shareDoc(reqPayload){
     }
 }
 
+async function editDoc(reqPayload){
+    try {
+        const { userMailId, itemId, owner} = reqPayload
+        const permissionPayload = {
+            userMailId : userMailId,
+            itemId : itemId,
+            action : PERMISSIONS.WRITE
+        }
+        const isPermitted = await permissionService.isAllowed(permissionPayload)
+        if(isPermitted){
+            const editedItem = await itemModel.findOne({_id : itemId})
+            console.log(editedItem)
+            const filePath = editedItem.StoragePath
+            const fileExixst = fs.existsSync(filePath)
+            if(fileExixst){
+                const contents = await fsPromises.readFile(filePath, {encoded : 'utf8'});
+                console.log(contents)
+                return({contents})
+            }else{
+                return new Error('sorry error on reading file!')
+            }
+        }else{
+            throw new Error('sorry permission denied!')
+        }  
+    } catch (err) {
+        console.log(err)
+        return {err}
+    }
+}
 async function viewDoc(reqPayload){
     try {
-        const { userId, itemId } =reqPayload
+        const { userMailId, itemId, owner} = reqPayload
+        const permissionPayload = {
+            userMailId : userMailId,
+            itemId : itemId,
+            action : PERMISSIONS.READ
+        }
+        const isPermitted = await permissionService.isAllowed(permissionPayload)
+        if(isPermitted){
+            const editedItem = await itemModel.findOne({_id : itemId})
+            console.log(editedItem)
+            const filePath = editedItem.StoragePath
+            const fileExixst = fs.existsSync(filePath)
+            if(fileExixst){
+                const contents = await fsPromises.readFile(filePath, {encoded : 'utf8'});
+                console.log(contents)
+                return({contents})
+            }else{
+                return new Error('sorry error on reading file!')
+            }
+        }else{
+            throw new Error('sorry permission denied!')
+        }  
         
     } catch (err) {
-        
+        console.log(err)
+        return {err}
     }
 
 
 }
 
 module.exports = {
-    createRootFolder,newFolder,uploadDoc,viewDoc,shareDoc
+    createRootFolder,newFolder,uploadDoc,viewDoc,shareDoc,editDoc
 }

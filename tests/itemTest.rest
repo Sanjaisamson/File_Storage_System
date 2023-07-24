@@ -25,18 +25,29 @@ Content-Type: application/json
 {
     "ownerId": "sibinbabu@gmail",
     "userMailId" : "sanjai@gmail",
-    "itemId" : "fad69702-ac45-4f55-b3d0-16b62495971f",
+    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735",
     "permissionValue" : {
         "p" : "1"
     }
 }
 ###
 ###
-POST http://localhost:3500/items/access-item
+POST http://localhost:3500/items/edit-item
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAxOTg1OTcsImV4cCI6MTY5MDE5OTE5N30.WglRFwY_ptUuIHr-IKNNB5LapfaL-lZakp3VQNwjuSQ
 Content-Type: application/json
 
 {
-    "ownerId": "sibinbabu@gmail",
     "userMailId" : "sanjai@gmail",
-    "itemId" : "fad69702-ac45-4f55-b3d0-16b62495971f"  
+    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735"
+}
+
+###
+###
+POST http://localhost:3500/items/view-item
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAxOTg1OTcsImV4cCI6MTY5MDE5OTE5N30.WglRFwY_ptUuIHr-IKNNB5LapfaL-lZakp3VQNwjuSQ
+Content-Type: application/json
+
+{
+    "userMailId" : "sanjai@gmail",
+    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735"
 }

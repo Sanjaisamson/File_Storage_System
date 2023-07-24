@@ -25,11 +25,29 @@ const uploadDoc = async (req,res,next) => {
     }
 }
 
+const editDoc = async (req, res, next) => {
+    try {
+        const reqPayload = {
+            userMailId : req.body.userMailId,
+            itemId : req.body.itemId,
+            owner : req.user
+        }
+        const editedDocument = await itemServices.editDoc(reqPayload)
+        res.send(editedDocument)
+        next()
+    } catch (err) {
+        console.log(err)
+        const editDocError = httpErrors(402,'Failed To Create New Folder')
+        next(editDocError)
+    }
+}
+
 const viewDoc = async (req,res,next) => {
     try {
         const reqPayload = {
-            userId : req.body.userId,
-            itemId : req.body.itemId
+            userMailId : req.body.userMailId,
+            itemId : req.body.itemId,
+            owner : req.user
         }
         const viewDocument = await itemServices.viewDoc(reqPayload)
         res.send(viewDocument)
@@ -74,5 +92,5 @@ const newFolder = async (req,res,next) => {
     }
 }
 module.exports = {
-    uploadDoc,newFolder,viewDoc,shareDoc
+    uploadDoc,newFolder,viewDoc,shareDoc,editDoc
 } 

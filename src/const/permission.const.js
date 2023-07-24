@@ -1,7 +1,9 @@
-const permissionConstants =  {
-        read : '1',
-        write : '2',
-        delete : '3'
+const PERMISSIONS = {
+        READ: 1,
+        WRITE: 2,
+        DELETE: 3
 }
 
-module.exports = permissionConstants
+module.exports = {
+        PERMISSIONS
+}
