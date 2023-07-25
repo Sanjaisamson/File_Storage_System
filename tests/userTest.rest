@@ -1,28 +1,34 @@
+###
+//create user
 POST  http://localhost:3500/user/sign-up 
 Content-Type: application/json
 
 {
-    "username" : "lijo",
-    "email" : "Lijotvm@gmail",
-    "password" : "lijotvm@123"
+    "username" : "donish",
+    "email" : "donishJoy@gmail",
+    "password" : "donish123@345"
 }
 ###
+//get user
 GET http://localhost:3500/user
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2ODk5NDE2NDIsImV4cCI6MTY4OTk0MjI0Mn0.jCR4BPAKGc64s_wjsdspG_J77OFHJf6dzuMYqsnmip8
 ###
-PUT  http://localhost:3500/user/update/64ae9d195a6e5d6b1043997e
+//update user
+PUT  http://localhost:3500/user/update
 Content-Type: application/json
 
 {
-    "name" : "sibin",
+    "userId" : "",
+    "name" : "donish",
     "address" : "sibi@123"
 }
 
 ###
-POST http://localhost:3500/user/login/b1e657f0-d298-4cf6-8598-16451c248805
+//generate tokens
+POST http://localhost:3500/user/login/75699118-a0f4-44ea-a187-86b9ea78b2ea
 Content-Type: application/json
 
 {
-    "username" : "sibin",
-    "password" : "sibi@123"
+    "username" : "donish",
+    "password" : "donish123@345"
 }

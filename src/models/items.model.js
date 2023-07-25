@@ -29,7 +29,7 @@ const itemDataSchema = mongoose.Schema(
         },
         type : {
             type: String,
-            enum : ['FOLDER', 'FILES'] ,
+            enum : ['FOLDER', 'FILE'] ,
             default : false
         },
         extension : {

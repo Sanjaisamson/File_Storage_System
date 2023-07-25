@@ -14,7 +14,6 @@ async function isAllowed(reqPayload){
         const permissionError = httpErrors(402,'Failed To check permission')
     }
 }
-
 module.exports = {
     isAllowed
 }

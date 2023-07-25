@@ -20,10 +20,10 @@ Content-Type: application/json
 ###
 ###
 POST http://localhost:3500/items/share-item
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjMzMzAsImV4cCI6MTY5MDI2MzkzMH0.35osPveaMinOoIhV2h3LhH7aTBO7dkUJDx7XWvknh-k
 Content-Type: application/json
 
 {
-    "ownerId": "sibinbabu@gmail",
     "userMailId" : "sanjai@gmail",
     "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735",
     "permissionValue" : {
@@ -33,7 +33,7 @@ Content-Type: application/json
 ###
 ###
 POST http://localhost:3500/items/edit-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAxOTg1OTcsImV4cCI6MTY5MDE5OTE5N30.WglRFwY_ptUuIHr-IKNNB5LapfaL-lZakp3VQNwjuSQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjIzODIsImV4cCI6MTY5MDI2Mjk4Mn0.09Hh2c4g_5Kkbsph0SW7WWZqIr_GeEbBv6LdFLmgMOg
 Content-Type: application/json
 
 {
@@ -44,10 +44,32 @@ Content-Type: application/json
 ###
 ###
 POST http://localhost:3500/items/view-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAxOTg1OTcsImV4cCI6MTY5MDE5OTE5N30.WglRFwY_ptUuIHr-IKNNB5LapfaL-lZakp3VQNwjuSQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjIzODIsImV4cCI6MTY5MDI2Mjk4Mn0.09Hh2c4g_5Kkbsph0SW7WWZqIr_GeEbBv6LdFLmgMOg
 Content-Type: application/json
 
 {
     "userMailId" : "sanjai@gmail",
     "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735"
+}
+
+###
+###
+POST http://localhost:3500/items/delete-item
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjIzODIsImV4cCI6MTY5MDI2Mjk4Mn0.09Hh2c4g_5Kkbsph0SW7WWZqIr_GeEbBv6LdFLmgMOg
+Content-Type: application/json
+
+{
+    "userMailId" : "sanjai@gmail",
+    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735"
+}
+
+###
+###
+//view item
+POST http://localhost:3500/items/view-content
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NTY5OTExOC1hMGY0LTQ0ZWEtYTE4Ny04NmI5ZWE3OGIyZWEiLCJpYXQiOjE2OTAzMTE1ODksImV4cCI6MTY5MDMxNTE4OX0.2aEmEKqoRITrjjpbgjuetJrikziKqwJlxl5dsP27fbk
+Content-Type: application/json
+
+{
+    "itemId" : "4fb4a276-d0a7-4b4c-8379-a0793272d8e8"
 }

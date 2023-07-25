@@ -34,7 +34,6 @@ async function generateTokens(req,res,next) {
     try {
         console.log(req.params)
         const userId = req.params.id
-        console.log("controller",userId)
         const getToken = await userServices.generateTokens(userId)
         const refreshToken = getToken.refreshToken
         const accessToken = getToken.accessToken
@@ -47,28 +46,11 @@ async function generateTokens(req,res,next) {
     }
 }
 
-async function updateUser(req, res, next){
-    try {
-        const userId = req.params.id
-        const updateData = {
-            id : req.params.id,
-            requestPayload : req.body
-        }
-    const updatedUser = await userServices.update(updateData)
-    res.send(updatedUser)
-    next()
-    } catch (err) {
-        console.log(err)
-        const updateError = httpErrors(404,"updation invalid!")
-        next(updateError)
-    }
-}
-
 function logoutUser(){
     
 }
 
 
 module.exports = {
-    getUser,createUser,updateUser,logoutUser,generateTokens
+    getUser,createUser,logoutUser,generateTokens
 }

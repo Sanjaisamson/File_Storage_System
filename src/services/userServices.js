@@ -1,11 +1,9 @@
-
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const httpErrors = require('http-errors')
+const bcrypt = require('bcrypt');
 const userModel = require('../models/user.model')
 const itemModel = require('../models/items.model')
 const refreshTokenModel = require('../models/refreshToken.Model')
-const bcrypt = require('bcrypt');
 const itemServices = require('../services/items.serveices')
 
 async function readUser(payload){
@@ -19,6 +17,7 @@ async function readUser(payload){
         throw err
     }
 }
+
 async function newUser(signupData){
     try {
         const {username, email,  password } = signupData
@@ -42,15 +41,15 @@ async function newUser(signupData){
         throw err
     }
 }
-async function generateTokens(tokenPayload){
 
+async function generateTokens(tokenPayload){
     try {
         const userId  = tokenPayload
         console.log("userId",userId)
             const accessToken = await jwt.sign(
             {userId},
             process.env.ACCESS_TOKEN_SECRET,
-            {expiresIn : "10m"}
+            {expiresIn : "1h"}
         )
             const refreshToken = await jwt.sign(
             {userId},
@@ -81,19 +80,10 @@ async function generateTokens(tokenPayload){
     }
 }
 
+async function logout(){
 
-async function update(updatedData){
-    try {
-        const {id , requestPayload } = updatedData
-        const userId = await userModel.findById(id)
-        const updatedUser = await userModel.findByIdAndUpdate(id, requestPayload, {new : true});
-        return {updatedUser}
-    } catch (err) {
-        console.log(err)
-        throw err
-    }
 }
 
 module.exports = {
-    newUser,readUser,update,generateTokens
+    newUser,readUser,logout,generateTokens
 }
