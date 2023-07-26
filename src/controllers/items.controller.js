@@ -1,9 +1,4 @@
-
-const fs = require('fs')
-const fsPromises = require('fs').promises
-const path = require('path')
-const multer = require('multer');
-const itemServices = require('../services/items.serveices')
+const itemServices = require('../services/items.services')
 const httpErrors = require('http-errors')
 
 const uploadDoc = async (req,res,next) => {
@@ -20,22 +15,23 @@ const uploadDoc = async (req,res,next) => {
         next()
     } catch (err) {
         console.log(err)
-        const uploadError = httpErrors(409,'uploading unsuccessful') 
+        const uploadError = httpErrors(422,'Unprocessable Entity : uploading unsuccessful') 
         next(uploadError)
     }
 }
 const newFolder = async (req,res,next) => {
     try {
         const reqPayload = {
-            userId : req.body.userId,
-            foldername : req.body.foldername
+            user : req.user,
+            folderName : req.body.folderName,
+            parentFolder : req.body.parentFolderId
         }
         const newFolder = await itemServices.newFolder(reqPayload)
         res.send(newFolder)
         next()
     } catch (err) {
         console.log(err)
-        const newFolderError = httpErrors(402,'Failed To Create New Folder')
+        const newFolderError = httpErrors(400,'Bad Request : Failed To Create New Folder')
         next(newFolderError)
     }
 }
@@ -44,13 +40,14 @@ const viewContent = async(req,res,next) => {
     try {
         const reqPayload = {
             user : req.user,
-            itemId : req.body.itemId
+            itemId : req.query.itemId
         }
         const content = await itemServices.viewContent(reqPayload)
+        res.send(content)
         next()
     } catch (err) {
         console.log(err)
-        const viewContentError = httpErrors(402,'Failed To view Content')
+        const viewContentError = httpErrors(400,'Bad Request : Failed To view Content')
         next(viewContentError)
     }
 }
@@ -68,7 +65,7 @@ const shareDoc = async (req, res, next) => {
         next()
     } catch (err) {
         console.log(err)
-        const shareDocError = httpErrors(402,'Failed To Add permission')
+        const shareDocError = httpErrors(400,'Bad Request : Failed To share file or to Add permission')
         next(shareDocError)
     }
 }
@@ -76,33 +73,32 @@ const shareDoc = async (req, res, next) => {
 const editDoc = async (req, res, next) => {
     try {
         const reqPayload = {
-            userMailId : req.body.userMailId,
             itemId : req.body.itemId,
-            owner : req.user
+            user : req.user,
+            newName : req.body.changingData.newName
         }
         const editedDocument = await itemServices.editDoc(reqPayload)
         res.send(editedDocument)
         next()
     } catch (err) {
         console.log(err)
-        const editDocError = httpErrors(402,'Failed To Create New Folder')
+        const editDocError = httpErrors(400,'Bad Request : Failed To edit Document')
         next(editDocError)
     }
 }
 
-const viewDoc = async (req,res,next) => {
+const downloadDoc = async (req,res,next) => {
     try {
         const reqPayload = {
-            userMailId : req.body.userMailId,
-            itemId : req.body.itemId,
-            owner : req.user
+            user : req.user ,
+            itemId : req.query.itemId,
         }
-        const viewDocument = await itemServices.viewDoc(reqPayload)
+        const viewDocument = await itemServices.downloadDoc(reqPayload)
         res.send(viewDocument)
         next()
     } catch (err) {
         console.log(err)
-        const viewDocError = httpErrors(402,'Failed To Create New Folder')
+        const viewDocError = httpErrors(400,'Bad Request : Failed To Download Document!')
         next(viewDocError)
     }
 }
@@ -110,7 +106,7 @@ const viewDoc = async (req,res,next) => {
 const deleteDoc = async (req, res, next) => {
     try {
         const reqPayload = {
-            userMailId : req.body.userMailId,
+            user : req.user,
             itemId : req.body.itemId
         }
         const deleteDocument = await itemServices.deleteDoc(reqPayload)
@@ -118,11 +114,11 @@ const deleteDoc = async (req, res, next) => {
         next()
     } catch (err) {
         console.log(err)
-        const deleteDocError = httpErrors(402,'Failed To Create New Folder')
+        const deleteDocError = httpErrors(400,'Bad Request : Failed To Delete Document!')
         next(deleteDocError)
     }
 }
 
 module.exports = {
-    uploadDoc,newFolder,viewDoc,shareDoc,editDoc,deleteDoc,viewContent
+    uploadDoc,newFolder,downloadDoc,shareDoc,editDoc,deleteDoc,viewContent
 } 

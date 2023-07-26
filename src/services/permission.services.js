@@ -4,14 +4,15 @@ const {PERMISSIONS} = require('../const/permission.const')
 
 async function isAllowed(reqPayload){
     try {
-        const {userMailId, itemId, action } = reqPayload
-        console.log(action)
-        const permissionCheck = await permissionModel.findOne({userMailId : userMailId, itemId : itemId})
+        const {user, item , action } = reqPayload
+        if (user.email == item.owner) {
+            return true
+        }
+        const permissionCheck = await permissionModel.findOne({userMailId : user.email, itemId : item._id})
         return permissionCheck.permissionValue.p >= action
     }
      catch (err) {
         console.log(err)
-        const permissionError = httpErrors(402,'Failed To check permission')
     }
 }
 module.exports = {

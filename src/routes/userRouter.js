@@ -6,8 +6,9 @@ const loginHandler = require('../middlewares/loginHandler.middleware')
 
 
 userRouter.get('/',authhandler.isAuthenticated, userController.getUser)
-userRouter.get('/refresh/:id',authhandler.refreshTokenVerify)
+userRouter.post('/refresh',authhandler.refreshTokenVerify)
 userRouter.post('/sign-up',userController.createUser)
-userRouter.post('/login/:id',loginHandler.isVerified,userController.generateTokens)
+userRouter.post('/login',loginHandler.isVerified,userController.generateTokens)
+userRouter.get('/logout',authhandler.isAuthenticated, userController.logoutUser)
 
 module.exports = userRouter

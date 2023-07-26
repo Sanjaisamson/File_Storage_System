@@ -4,31 +4,36 @@ POST  http://localhost:3500/user/sign-up
 Content-Type: application/json
 
 {
-    "username" : "donish",
-    "email" : "donishJoy@gmail",
-    "password" : "donish123@345"
+    "username" : "akhil",
+    "email" : "akhil@gmail",
+    "password" : "akhiltvm345"
 }
+###
+
+###
+//refresh-token
+POST http://localhost:3500/user/refresh?userId=5fd8c30f-77ab-4af3-8f30-2ee7c9149abf
+###
+
 ###
 //get user
 GET http://localhost:3500/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2ODk5NDE2NDIsImV4cCI6MTY4OTk0MjI0Mn0.jCR4BPAKGc64s_wjsdspG_J77OFHJf6dzuMYqsnmip8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmQ4YzMwZi03N2FiLTRhZjMtOGYzMC0yZWU3YzkxNDlhYmYiLCJpYXQiOjE2OTAzOTg4MzEsImV4cCI6MTY5MDQwMjQzMX0.ZD15kxOGLzxG0gGd6GSkZN1UxWWzi6fho7gQXb2l8SE
 ###
-//update user
-PUT  http://localhost:3500/user/update
-Content-Type: application/json
-
-{
-    "userId" : "",
-    "name" : "donish",
-    "address" : "sibi@123"
-}
 
 ###
 //generate tokens
-POST http://localhost:3500/user/login/75699118-a0f4-44ea-a187-86b9ea78b2ea
+POST http://localhost:3500/user/login?userId=5fd8c30f-77ab-4af3-8f30-2ee7c9149abf
 Content-Type: application/json
 
 {
-    "username" : "donish",
-    "password" : "donish123@345"
+    "username" : "akhil",
+    "password" : "akhiltvm345"
 }
+###
+
+###
+//logOut user
+GET http://localhost:3500/user/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmQ4YzMwZi03N2FiLTRhZjMtOGYzMC0yZWU3YzkxNDlhYmYiLCJpYXQiOjE2OTAzOTg4MzEsImV4cCI6MTY5MDQwMjQzMX0.ZD15kxOGLzxG0gGd6GSkZN1UxWWzi6fho7gQXb2l8SE
+###

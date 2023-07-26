@@ -1,13 +1,13 @@
 const httpErrors = require('http-errors')
 const userServices = require('../services/userServices')
-const authhandler = require('../middlewares/authHandler.middleware')
 
 async function getUser(req, res, next){
     try {
-        console.log(req.user)
-        const userPayload = req.user
-        const userData = await userServices.readUser(userId)
-        res.send({userData})
+        const userPayload = {
+           user : req.user
+        }
+        const userData = await userServices.readUser(userPayload)
+        res.send(userData)
     } catch (err) {
         console.log(err)
         const readError = httpErrors(401,'read Failed');
@@ -32,8 +32,7 @@ async function createUser(req,res,next){
 
 async function generateTokens(req,res,next) {
     try {
-        console.log(req.params)
-        const userId = req.params.id
+        const userId = req.query.userId
         const getToken = await userServices.generateTokens(userId)
         const refreshToken = getToken.refreshToken
         const accessToken = getToken.accessToken
@@ -46,8 +45,20 @@ async function generateTokens(req,res,next) {
     }
 }
 
-function logoutUser(){
-    
+async function logoutUser(req, res, next){
+    try {
+        const logoutPayload = {
+            user : req.user
+        }
+        const logout = await userServices.logout(logoutPayload)
+        res.clearCookie('jwt')
+        res.send(logout)
+        next()
+    } catch (err) {
+        console.log(err)
+        const logoutError = httpErrors(401,'logout failed!');
+        next(logoutError)
+    }
 }
 
 

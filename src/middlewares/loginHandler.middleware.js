@@ -6,19 +6,12 @@ const userData = require('../models/user.model')
 
 async function isVerified(req,res,next){
     try {
-        const loginData = {
-            userId : req.params.id,
-            username : req.body.username,
-            password : req.body.password,
-        }
-        const reqPassword = loginData.password
-        const _id = loginData.userId
-        console.log(_id)
-        const user = await userData.findOne({_id})
-        //console.log({savedPassword})
-        const userPassword = user.password
-        console.log(userPassword)
-        const isVerified = await bcrypt.compare(reqPassword, userPassword)
+        const  userId = req.query.userId
+        const username = req.body.username
+        const password =req.body.password
+
+        const user = await userData.findOne({_id: userId})
+        const isVerified = await bcrypt.compare(password, user.password)
         console.log(isVerified)
         if(isVerified){
             next()

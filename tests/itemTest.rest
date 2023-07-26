@@ -1,26 +1,19 @@
 ###
 POST  http://localhost:3500/files/upload
-
 ###
-POST  http://localhost:3500/items/create-folder 
+###
+POST http://localhost:3500/items/new-folder
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
 Content-Type: application/json
 
 {
-    "userId" : "b1e657f0-d298-4cf6-8598-16451c248805"
-}
-###
-###
-POST http://localhost:3500/items/new-folder 
-Content-Type: application/json
-
-{
-    "userId" : "b1e657f0-d298-4cf6-8598-16451c248805",
-    "foldername" :"second-folder"
+    "folderName" :"first-folder",
+    "parentFolderId" : "6df34342-5294-4a73-98c7-03c656a75222"
 }
 ###
 ###
 POST http://localhost:3500/items/share-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjMzMzAsImV4cCI6MTY5MDI2MzkzMH0.35osPveaMinOoIhV2h3LhH7aTBO7dkUJDx7XWvknh-k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
 Content-Type: application/json
 
 {
@@ -33,43 +26,36 @@ Content-Type: application/json
 ###
 ###
 POST http://localhost:3500/items/edit-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjIzODIsImV4cCI6MTY5MDI2Mjk4Mn0.09Hh2c4g_5Kkbsph0SW7WWZqIr_GeEbBv6LdFLmgMOg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
 Content-Type: application/json
 
 {
-    "userMailId" : "sanjai@gmail",
-    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735"
+    "itemId" : "5414e24e-7c60-4871-9575-ba9687bc4337",
+    "changingData" : {
+        "newName" : "firstUpdatedFile"
+    }
 }
 
 ###
 ###
-POST http://localhost:3500/items/view-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjIzODIsImV4cCI6MTY5MDI2Mjk4Mn0.09Hh2c4g_5Kkbsph0SW7WWZqIr_GeEbBv6LdFLmgMOg
+GET  http://localhost:3500/items/download-item?itemId=5414e24e-7c60-4871-9575-ba9687bc4337
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
 Content-Type: application/json
 
-{
-    "userMailId" : "sanjai@gmail",
-    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735"
-}
 
 ###
 ###
 POST http://localhost:3500/items/delete-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiMWU2NTdmMC1kMjk4LTRjZjYtODU5OC0xNjQ1MWMyNDg4MDUiLCJpYXQiOjE2OTAyNjIzODIsImV4cCI6MTY5MDI2Mjk4Mn0.09Hh2c4g_5Kkbsph0SW7WWZqIr_GeEbBv6LdFLmgMOg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
 Content-Type: application/json
 
 {
-    "userMailId" : "sanjai@gmail",
-    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735"
+    "itemId" : "a55b1a48-7260-4eaa-a3bc-a58d9d44dc54"
 }
 
 ###
 ###
 //view item
-POST http://localhost:3500/items/view-content
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NTY5OTExOC1hMGY0LTQ0ZWEtYTE4Ny04NmI5ZWE3OGIyZWEiLCJpYXQiOjE2OTAzMTE1ODksImV4cCI6MTY5MDMxNTE4OX0.2aEmEKqoRITrjjpbgjuetJrikziKqwJlxl5dsP27fbk
+GET http://localhost:3500/items/view-content?itemId=342e91b4-8d59-43cf-b6ef-9d9c4dce82e6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
 Content-Type: application/json
-
-{
-    "itemId" : "4fb4a276-d0a7-4b4c-8379-a0793272d8e8"
-}

@@ -4,14 +4,19 @@ const bcrypt = require('bcrypt');
 const userModel = require('../models/user.model')
 const itemModel = require('../models/items.model')
 const refreshTokenModel = require('../models/refreshToken.Model')
-const itemServices = require('../services/items.serveices')
+const itemServices = require('../services/items.services')
 
 async function readUser(payload){
     try {
-        const {_id, name, email, password } = payload
-        const userEmail = email
-        const items = await itemModel.find({owner : userEmail})
-    return(items)
+        const {user} = payload
+        console.log(user)
+        const rootFolder = await itemModel.findOne({owner : user.email, parentFolder : null})
+        const children = await itemModel.find({parentFolder : rootFolder._id})
+        const responseObject = {
+            rootFolder: rootFolder,
+            content : children 
+        }
+        return(responseObject)
     } catch (err) {
         console.log(err)
         throw err
@@ -53,8 +58,7 @@ async function generateTokens(tokenPayload){
         )
             const refreshToken = await jwt.sign(
             {userId},
-            process.env.REFRESH_TOKEN_SECRET,
-            {expiresIn : "2m"}
+            process.env.REFRESH_TOKEN_SECRET
         )
         const find_user = await refreshTokenModel.findOne({userId})
         if(!find_user){
@@ -80,8 +84,18 @@ async function generateTokens(tokenPayload){
     }
 }
 
-async function logout(){
-
+async function logout(logoutPayload){
+    try {
+        const { user } = logoutPayload
+        const refreshTokens = await refreshTokenModel.deleteOne({userId : user._id})
+        if(!refreshTokens){
+            throw err
+        }
+        return (refreshTokens)
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
 }
 
 module.exports = {

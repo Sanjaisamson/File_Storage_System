@@ -23,17 +23,14 @@ async function isAuthenticated(req,res,next){
 }
 async function refreshTokenVerify(req,res,next){
     try {
-        const userId = req.params.id
-        console.log(userId)
-        //const cookie = req.cookies
-        const getrefreshToken = await refreshTokenModel.find({userId},{userId:0,_id:0,__v:0})
-        console.log(getrefreshToken)
+        const userId = req.query.userId
+        const getrefreshToken = await refreshTokenModel.findOne({userId: userId})
         const refreshToken = getrefreshToken.refreshToken
         const tokenVerify = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
         const accessToken = jwt.sign(
-            {tokenVerify},
+            {userId},
             process.env.ACCESS_TOKEN_SECRET,
-            {expiresIn : '30s'}
+            {expiresIn : '1h'}
         )
         res.json({accessToken})
     } catch (err) {
