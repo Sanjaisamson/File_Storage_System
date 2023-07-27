@@ -11,6 +11,8 @@ const { PERMISSIONS } = require('../const/permission.const')
 const { ITEMTYPES } = require('../const/itemtypes.const');
 const defaultDir = defaultStoragePath
 
+
+
 async function createRootFolder(reqPayload) {
     try {
         const userId = reqPayload
@@ -241,9 +243,7 @@ async function downloadDoc(reqPayload) {
         }
         const isPermitted = await permissionService.isAllowed(permissionPayload)
         if (isPermitted) {
-            const requiredItem = await itemModel.findOne({ _id: itemId })
-            console.log(requiredItem)
-            const filePath = requiredItem.StoragePath
+            const filePath =item.StoragePath
             const fileExixst = fs.existsSync(filePath)
             if (fileExixst) {
                 const contents = await fsPromises.readFile(filePath, { encoded: 'utf8' });
@@ -301,6 +301,36 @@ async function deleteDoc(reqPayload) {
         return { err }
     }
 }
+
+async function deleteFolder(reqPayload){
+    try {
+        const itemId = reqPayload
+        let fileArray = []
+        let folderArray = []
+        const scannedFolders =[itemId]
+        const items = await itemModel.find({parentFolder : itemId })
+        items.forEach(async element => {
+            if(element.type === 'FILE'){
+                fileArray.push(element._id)
+            }else if(element.type === 'FOLDER'){
+                folderArray.push(element._id)
+            }else{
+                console.log("error found in listing files for deletion")
+            }
+        })
+        while (folderArray.length > 0) {
+            const childId = folderArray.shift();
+            const recursiveCall = await deleteFolder(childId);
+            fileArray.push(...recursiveCall.fileArray);
+            folderArray.push(...recursiveCall.folderArray);
+            scannedFolders.push(...recursiveCall.scannedFolders)
+          }
+        return{fileArray,folderArray,scannedFolders}
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
 module.exports = {
-    createRootFolder, newFolder, uploadDoc, downloadDoc, shareDoc, editDoc, deleteDoc, viewContent
+    createRootFolder, newFolder, uploadDoc, downloadDoc, shareDoc, editDoc, deleteDoc, viewContent, deleteFolder
 }

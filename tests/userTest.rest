@@ -4,26 +4,26 @@ POST  http://localhost:3500/user/sign-up
 Content-Type: application/json
 
 {
-    "username" : "akhil",
-    "email" : "akhil@gmail",
-    "password" : "akhiltvm345"
+    "username" : "jeffin",
+    "email" : "jeffin@gmail",
+    "password" : "jeffin345"
 }
 ###
 
 ###
 //refresh-token
-POST http://localhost:3500/user/refresh?userId=5fd8c30f-77ab-4af3-8f30-2ee7c9149abf
+POST http://localhost:3500/user/refresh?userId=fb68ebff-7c89-4883-88e0-4dda07645439
 ###
 
 ###
 //get user
 GET http://localhost:3500/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmQ4YzMwZi03N2FiLTRhZjMtOGYzMC0yZWU3YzkxNDlhYmYiLCJpYXQiOjE2OTAzOTg4MzEsImV4cCI6MTY5MDQwMjQzMX0.ZD15kxOGLzxG0gGd6GSkZN1UxWWzi6fho7gQXb2l8SE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTA0NDg3ODksImV4cCI6MTY5MDQ1MjM4OX0.8-y3q-rUkamx9dFxuv28t91v5iovmjjixEdLsEIhFMU
 ###
 
 ###
 //generate tokens
-POST http://localhost:3500/user/login?userId=5fd8c30f-77ab-4af3-8f30-2ee7c9149abf
+POST http://localhost:3500/user/login?userId=374b0476-6ace-40be-99e1-f546b3fbe998
 Content-Type: application/json
 
 {

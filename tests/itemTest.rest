@@ -3,17 +3,17 @@ POST  http://localhost:3500/files/upload
 ###
 ###
 POST http://localhost:3500/items/new-folder
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA0OTEyMDAsImV4cCI6MTY5MDQ5NDgwMH0.qIq1JPpBloS_bpCpSv66f2JTjITXQ-z70SO566AwFss
 Content-Type: application/json
 
 {
     "folderName" :"first-folder",
-    "parentFolderId" : "6df34342-5294-4a73-98c7-03c656a75222"
+    "parentFolderId" : "d383f8a3-cb60-4884-8852-67ade9c52d4b"
 }
 ###
 ###
 POST http://localhost:3500/items/share-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA0OTEyMDAsImV4cCI6MTY5MDQ5NDgwMH0.qIq1JPpBloS_bpCpSv66f2JTjITXQ-z70SO566AwFss
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 ###
 ###
 POST http://localhost:3500/items/edit-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA0OTEyMDAsImV4cCI6MTY5MDQ5NDgwMH0.qIq1JPpBloS_bpCpSv66f2JTjITXQ-z70SO566AwFss
 Content-Type: application/json
 
 {
@@ -39,14 +39,14 @@ Content-Type: application/json
 ###
 ###
 GET  http://localhost:3500/items/download-item?itemId=5414e24e-7c60-4871-9575-ba9687bc4337
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA0OTEyMDAsImV4cCI6MTY5MDQ5NDgwMH0.qIq1JPpBloS_bpCpSv66f2JTjITXQ-z70SO566AwFss
 Content-Type: application/json
 
 
 ###
 ###
 POST http://localhost:3500/items/delete-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA0OTEyMDAsImV4cCI6MTY5MDQ5NDgwMH0.qIq1JPpBloS_bpCpSv66f2JTjITXQ-z70SO566AwFss
 Content-Type: application/json
 
 {
@@ -57,5 +57,10 @@ Content-Type: application/json
 ###
 //view item
 GET http://localhost:3500/items/view-content?itemId=342e91b4-8d59-43cf-b6ef-9d9c4dce82e6
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTAzNzcyNjgsImV4cCI6MTY5MDM4MDg2OH0._eQjH3pzh_cWlASmGT2fHP7na_VB-WpThViLuMVVE2I
-Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA0OTEyMDAsImV4cCI6MTY5MDQ5NDgwMH0.qIq1JPpBloS_bpCpSv66f2JTjITXQ-z70SO566AwFss
+###
+
+###
+GET http://localhost:3500/items/delete-folder/d383f8a3-cb60-4884-8852-67ade9c52d4b
+
+###

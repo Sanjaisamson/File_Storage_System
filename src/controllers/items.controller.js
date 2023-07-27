@@ -1,3 +1,4 @@
+const itemsModel = require('../models/items.model')
 const itemServices = require('../services/items.services')
 const httpErrors = require('http-errors')
 
@@ -118,7 +119,17 @@ const deleteDoc = async (req, res, next) => {
         next(deleteDocError)
     }
 }
+const deleteFolder = async (req, res, next) => {
+    try {
+        const itemId = req.params.id
+        const deleteFolder = await itemServices.deleteFolder(itemId) 
+        res.send(deleteFolder)
+        next()
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 module.exports = {
-    uploadDoc,newFolder,downloadDoc,shareDoc,editDoc,deleteDoc,viewContent
+    uploadDoc,newFolder,downloadDoc,shareDoc,editDoc,deleteDoc,viewContent,deleteFolder
 } 
