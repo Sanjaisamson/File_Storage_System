@@ -1,4 +1,3 @@
-const itemsModel = require('../models/items.model')
 const itemServices = require('../services/items.services')
 const httpErrors = require('http-errors')
 
@@ -121,12 +120,15 @@ const deleteDoc = async (req, res, next) => {
 }
 const deleteFolder = async (req, res, next) => {
     try {
-        const itemId = req.params.id
-        const deleteFolder = await itemServices.deleteFolder(itemId) 
-        res.send(deleteFolder)
+        const itemId = req.user
+        const scannedItems = await itemServices.scanFolders(itemId) 
+        res.send(scannedItems)
+        const deleteItems = await itemServices.deleteItems(scannedItems.fileArray,scannedItems.scannedFolders)
         next()
     } catch (err) {
         console.log(err)
+        const deleteFolderError = httpErrors(400,'Bad Request : Failed To Delete Folder!')
+        next(deleteFolderError)
     }
 }
 

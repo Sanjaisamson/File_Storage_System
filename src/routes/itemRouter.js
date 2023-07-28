@@ -12,6 +12,6 @@ itemRouter.post('/edit-item',authHandler.isAuthenticated,itemController.editDoc)
 itemRouter.post('/delete-item',authHandler.isAuthenticated,itemController.deleteDoc)
 itemRouter.get('/view-content',authHandler.isAuthenticated,itemController.viewContent)
 itemRouter.get('/download-item',authHandler.isAuthenticated,itemController.downloadDoc)
-itemRouter.get('/delete-folder/:id',itemController.deleteFolder)
+itemRouter.get('/delete-folder',authHandler.isAuthenticated,itemController.deleteFolder)
 
 module.exports = itemRouter;

@@ -12,7 +12,6 @@ async function isVerified(req,res,next){
 
         const user = await userData.findOne({_id: userId})
         const isVerified = await bcrypt.compare(password, user.password)
-        console.log(isVerified)
         if(isVerified){
             next()
         }else{

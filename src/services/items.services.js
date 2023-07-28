@@ -213,7 +213,6 @@ async function editDoc(reqPayload) {
             if (fileExixst) {
                 const newFileName = newName +"."+item.extension
                 const fileRename = await itemModel.updateOne({_id:item._id},{$set:{name:newFileName}})
-                console.log(fileRename)
                 return (fileRename)
             } else {
                 return new Error('sorry error on editing file!')
@@ -301,15 +300,32 @@ async function deleteDoc(reqPayload) {
         return { err }
     }
 }
+async function deleteItems(fileArray, folderArray){
+    const files = [...fileArray]
+    const folders = [...folderArray]
+    for(let element of files){
+        const DbContent = await itemModel.findOne({_id : element})
+        const deleteFileContent = fs.unlink(DbContent.StoragePath, (err) => {
+            if(err){
+                throw err
+            }
+        })
+        const deleteDbContent = await itemModel.deleteOne({_id : element})
+    }
+    for(let element of folders){
+        const clearFolder = await itemModel.deleteOne({_id : element})
+    }
+    console.log("folder deleted successfully")
+}
 
-async function deleteFolder(reqPayload){
+async function scanFolders(reqPayload){
     try {
         const itemId = reqPayload
         let fileArray = []
         let folderArray = []
-        const scannedFolders =[itemId]
+        let scannedFolders =[]
         const items = await itemModel.find({parentFolder : itemId })
-        items.forEach(async element => {
+        items.forEach(element => {
             if(element.type === 'FILE'){
                 fileArray.push(element._id)
             }else if(element.type === 'FOLDER'){
@@ -320,7 +336,7 @@ async function deleteFolder(reqPayload){
         })
         while (folderArray.length > 0) {
             const childId = folderArray.shift();
-            const recursiveCall = await deleteFolder(childId);
+            const recursiveCall = await scanFolders(childId);
             fileArray.push(...recursiveCall.fileArray);
             folderArray.push(...recursiveCall.folderArray);
             scannedFolders.push(...recursiveCall.scannedFolders)
@@ -328,9 +344,9 @@ async function deleteFolder(reqPayload){
         return{fileArray,folderArray,scannedFolders}
     } catch (err) {
         console.log(err)
-        throw err
+        return {err}
     }
 }
 module.exports = {
-    createRootFolder, newFolder, uploadDoc, downloadDoc, shareDoc, editDoc, deleteDoc, viewContent, deleteFolder
+    createRootFolder, newFolder, uploadDoc, downloadDoc, shareDoc, editDoc, deleteDoc, viewContent, scanFolders,deleteItems
 }

@@ -11,7 +11,6 @@ async function isAuthenticated(req,res,next){
         const bearerLessToken = authHeader.split(' ')[1]
         const authVerify = jwt.verify(bearerLessToken, process.env.ACCESS_TOKEN_SECRET)
         const userId = authVerify.userId
-        console.log(userId)
         const authenticatedUser = await userModel.findOne({_id : userId})
         req.user = authenticatedUser
         next()

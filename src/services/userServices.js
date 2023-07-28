@@ -9,7 +9,6 @@ const itemServices = require('../services/items.services')
 async function readUser(payload){
     try {
         const {user} = payload
-        console.log(user)
         const rootFolder = await itemModel.findOne({owner : user.email, parentFolder : null})
         const children = await itemModel.find({parentFolder : rootFolder._id})
         const responseObject = {
@@ -50,7 +49,6 @@ async function newUser(signupData){
 async function generateTokens(tokenPayload){
     try {
         const userId  = tokenPayload
-        console.log("userId",userId)
             const accessToken = await jwt.sign(
             {userId},
             process.env.ACCESS_TOKEN_SECRET,
