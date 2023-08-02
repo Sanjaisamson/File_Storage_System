@@ -49,8 +49,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MTY1N
 ###
 ###
 //view item
-GET http://localhost:3500/items/view-folder?itemId=59852cb4-95ba-4e70-a5cc-61e7f6e62f44
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MTY1NjBiYi1iZmRkLTRjNjUtYjk0OC0zNzE2MzgxOGJjOTkiLCJpYXQiOjE2OTA5NzcxMTcsImV4cCI6MTY5MDk3NzcxN30.pyENXsvqbrecvEEVc3nbXVZDXl8b4MNgC9wmSDtQ_1k
+GET http://localhost:3500/items/view-folder?itemId=223f79e5-3dd0-4ec0-8a2e-ff21258e7417
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MTY1NjBiYi1iZmRkLTRjNjUtYjk0OC0zNzE2MzgxOGJjOTkiLCJpYXQiOjE2OTEwMDExMTcsImV4cCI6MTY5MTAwMTcxN30.S11sARG4thYRXoWjt6PjnXl997kFBHBzZ2GfGySeUy8
 ###
 
 ###

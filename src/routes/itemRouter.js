@@ -4,7 +4,6 @@ const itemController = require('../controllers/items.controller')
 const uploadHandler = require('../middlewares/uploadHandler.middleware')
 const authHandler = require('../middlewares/authHandler.middleware')
 
-itemRouter.post('/view-file',authHandler.isAuthenticated,itemController.newFolder)
 itemRouter.post('/new-folder',authHandler.isAuthenticated,itemController.newFolder)
 itemRouter.post('/upload-file',authHandler.isAuthenticated,uploadHandler,itemController.uploadFile)
 itemRouter.post('/share-item',authHandler.isAuthenticated,itemController.shareFile)
