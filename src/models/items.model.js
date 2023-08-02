@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 const { v4: uuidv4 } = require('uuid');
 
-const itemDataSchema = mongoose.Schema(
+const ItemSchema = mongoose.Schema(
     {
         _id : {
             type : String,
             default : uuidv4
         },
-        userId : {
+        ownerId : {
             type : mongoose.Schema.Types.String,
             ref :"userData"
         },
@@ -19,7 +19,7 @@ const itemDataSchema = mongoose.Schema(
             type : Number,
             require : true
         },
-        owner : {
+        ownerMailId : {
             type: String,
             require : true
         },
@@ -36,7 +36,7 @@ const itemDataSchema = mongoose.Schema(
             type: String,
             require : true
         },
-        StoragePath : {
+        storagePath : {
             type : String,
             require : true
         },
@@ -47,4 +47,8 @@ const itemDataSchema = mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model("itemDataModel", itemDataSchema)
+const ItemModel = mongoose.model("Item", ItemSchema) // Change table name
+
+module.exports = {
+    ItemModel
+}

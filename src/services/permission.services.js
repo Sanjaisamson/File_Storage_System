@@ -1,18 +1,18 @@
-const permissionModel = require('../models/permission.model')
+const {PermissionModel } = require('../models/permission.model')
 const httpErrors = require('http-errors')
-const {PERMISSIONS} = require('../const/permission.const')
 
 async function isAllowed(reqPayload){
     try {
         const {user, item , action } = reqPayload
-        if (user.email == item.owner) {
+        if (user.email == item.ownerMailId) {
             return true
         }
-        const permissionCheck = await permissionModel.findOne({userMailId : user.email, itemId : item._id})
-        return permissionCheck.permissionValue.p >= action
+        const permissionCheck = await PermissionModel.findOne({userMailId : user.email, itemId : item._id})
+        return permissionCheck.permission.value >= action
     }
      catch (err) {
         console.log(err)
+        throw httpErrors(401, "Unauthorized user !!! permission denied")
     }
 }
 module.exports = {

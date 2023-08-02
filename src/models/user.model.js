@@ -1,27 +1,29 @@
 const mongoose = require('mongoose')
 const { v4: uuidv4 } = require('uuid');
 
-const userDataSchema = mongoose.Schema(
+const userSchema = mongoose.Schema(
     {
-        _id : {
-            type : String,
-            default : uuidv4
+        _id: {
+            type: String,
+            default: uuidv4
         },
-        name : {
-            type : String,
-            require:[true, "please fill the name"]
+        name: {
+            type: String,
+            require: true
         },
-        email : {
-            type : String,
-            require:[true, "please fill the email"]
+        email: {
+            type: String,
+            require: true
         },
-        password : {
-            type : String,
-            require:[true, "please fill the password"]
+        password: {
+            type: String,
+            require: true
         }
-    },{
-        timestamps : true
+    },
+    {
+        timestamps: true
     }
 )
-module.exports = mongoose.model("userData", userDataSchema)
+const UserModel = mongoose.model("user", userSchema)
 
+module.exports = { UserModel }

@@ -1,67 +1,60 @@
 ###
-POST  http://localhost:3500/files/upload
+POST  http://localhost:3500/items/upload-file
 ###
 ###
 POST http://localhost:3500/items/new-folder
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA1NTA3MzcsImV4cCI6MTY5MDU1NDMzN30.OYAeC3uRxUTM__SNWpuFs2CqA8IDwC1BgsMuWyDKqvk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyNzYwNTc3My1jNmNmLTQ0NTgtYjExNy1hY2NmY2ZmOWUwN2YiLCJpYXQiOjE2OTA5NzU0MjUsImV4cCI6MTY5MDk3NjAyNX0.Rk4DlwKIjdmIN6GbyOhspM0mg6JakiuVxubRvqslipE
 Content-Type: application/json
 
 {
     "folderName" :"second-folder",
-    "parentFolderId" : "d383f8a3-cb60-4884-8852-67ade9c52d4b"
+    "parentFolderId" : "6f16d232-bd98-4476-9a86-a670e9c7f3c4"
 }
 ###
 ###
 POST http://localhost:3500/items/share-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA1NTA3MzcsImV4cCI6MTY5MDU1NDMzN30.OYAeC3uRxUTM__SNWpuFs2CqA8IDwC1BgsMuWyDKqvk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyNzYwNTc3My1jNmNmLTQ0NTgtYjExNy1hY2NmY2ZmOWUwN2YiLCJpYXQiOjE2OTA5NzU0MjUsImV4cCI6MTY5MDk3NjAyNX0.Rk4DlwKIjdmIN6GbyOhspM0mg6JakiuVxubRvqslipE
 Content-Type: application/json
 
 {
-    "userMailId" : "sanjai@gmail",
-    "itemId" : "eb9c16c9-b809-4521-b2dc-2b136b146735",
-    "permissionValue" : {
-        "p" : "1"
+    "userMailId" : "donish@gmail",
+    "itemId" : "4ab9f0a1-7c89-4c5b-aa31-9828ec321cc8",
+    "permission" : {
+        "value" : "3"
     }
 }
 ###
 ###
 POST http://localhost:3500/items/edit-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA1NTA3MzcsImV4cCI6MTY5MDU1NDMzN30.OYAeC3uRxUTM__SNWpuFs2CqA8IDwC1BgsMuWyDKqvk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMmNhOTQ4Yy0wMjRjLTRlNzItODkyMC1kMmFiMzk5ZmZiZmMiLCJpYXQiOjE2OTA5Njk4NjUsImV4cCI6MTY5MDk3MDQ2NX0.kgPEDpY7LsQQusUovG961TzKs_59IfrBDj3l9RtbykE
 Content-Type: application/json
 
 {
-    "itemId" : "5414e24e-7c60-4871-9575-ba9687bc4337",
+    "itemId" : "b7a400da-a517-4880-a8f1-4754689e4d14",
     "changingData" : {
-        "newName" : "firstUpdatedFile"
+        "newName" : "firstUpdatedFolder"
     }
 }
 
 ###
 ###
-GET  http://localhost:3500/items/download-item?itemId=5414e24e-7c60-4871-9575-ba9687bc4337
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA1NTA3MzcsImV4cCI6MTY5MDU1NDMzN30.OYAeC3uRxUTM__SNWpuFs2CqA8IDwC1BgsMuWyDKqvk
-Content-Type: application/json
-
+GET  http://localhost:3500/items/download-file?itemId=16a44080-f1de-4792-9323-c543b356406e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhMmNhOTQ4Yy0wMjRjLTRlNzItODkyMC1kMmFiMzk5ZmZiZmMiLCJpYXQiOjE2OTA5NzA3MDMsImV4cCI6MTY5MDk3MTMwM30.6J0kVUymvk3UP3tuDxP2Qbz5H_7lYPOVfRtK1SPyB-Q
 
 ###
 ###
-POST http://localhost:3500/items/delete-item
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA1NTA3MzcsImV4cCI6MTY5MDU1NDMzN30.OYAeC3uRxUTM__SNWpuFs2CqA8IDwC1BgsMuWyDKqvk
-Content-Type: application/json
-
-{
-    "itemId" : "a55b1a48-7260-4eaa-a3bc-a58d9d44dc54"
-}
+POST http://localhost:3500/items/delete-file?fileId=ece22da3-35db-4f0b-afb1-24fc4514f03f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MTY1NjBiYi1iZmRkLTRjNjUtYjk0OC0zNzE2MzgxOGJjOTkiLCJpYXQiOjE2OTA5NzcxMTcsImV4cCI6MTY5MDk3NzcxN30.pyENXsvqbrecvEEVc3nbXVZDXl8b4MNgC9wmSDtQ_1k
 
 ###
 ###
 //view item
-GET http://localhost:3500/items/view-content?itemId=342e91b4-8d59-43cf-b6ef-9d9c4dce82e6
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3OTIyNjBjMC1kZDdhLTQyMWYtYTA2NS0xMTEzMTIxZjZkOGUiLCJpYXQiOjE2OTA1NTA3MzcsImV4cCI6MTY5MDU1NDMzN30.OYAeC3uRxUTM__SNWpuFs2CqA8IDwC1BgsMuWyDKqvk
+GET http://localhost:3500/items/view-folder?itemId=59852cb4-95ba-4e70-a5cc-61e7f6e62f44
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MTY1NjBiYi1iZmRkLTRjNjUtYjk0OC0zNzE2MzgxOGJjOTkiLCJpYXQiOjE2OTA5NzcxMTcsImV4cCI6MTY5MDk3NzcxN30.pyENXsvqbrecvEEVc3nbXVZDXl8b4MNgC9wmSDtQ_1k
 ###
 
 ###
-GET http://localhost:3500/items/delete-folder
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNzRiMDQ3Ni02YWNlLTQwYmUtOTllMS1mNTQ2YjNmYmU5OTgiLCJpYXQiOjE2OTA1NzA5NDksImV4cCI6MTY5MDU3NDU0OX0.yE3--lbskAcDSTbo3ynXnBNS3vbM35uHPA4R3zW2z9g
+GET http://localhost:3500/items/delete-folder?folderId=6f16d232-bd98-4476-9a86-a670e9c7f3c4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyNzYwNTc3My1jNmNmLTQ0NTgtYjExNy1hY2NmY2ZmOWUwN2YiLCJpYXQiOjE2OTA5NzY2NzEsImV4cCI6MTY5MDk3NzI3MX0.2GXzX_byyrO-Tf5fVIgt2WaDUpYtDAJT3VxUnpubydo
 
 ###

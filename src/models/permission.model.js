@@ -1,4 +1,3 @@
-const { json } = require('body-parser');
 const mongoose = require('mongoose')
 const { v4: uuidv4 } = require('uuid');
 
@@ -18,10 +17,14 @@ const permissionSchema = mongoose.Schema(
             ref : "usersData",
             require : true
         },
-        permissionValue : {
-            p : {type : String,require :true},
+        permission : {
+            value : {type : String,require :true},
         }
     }
 )
 
-module.exports = mongoose.model("permissionModel", permissionSchema)
+const PermissionModel = mongoose.model("permissions", permissionSchema)
+
+module.exports = {
+    PermissionModel
+}
