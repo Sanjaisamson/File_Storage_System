@@ -2,28 +2,31 @@ const fs = require('fs')
 const fsPromises = require('fs').promises
 const path = require('path')
 const permissionService = require('./permission.services')
-const {defaultDir} = require('../config/defaultStoragePath');
-const { PermissionModel} = require('../models/permission.model')
+const { defaultDir } = require('../config/defaultStoragePath');
+const { PermissionModel } = require('../models/permission.model')
 const { nanoid } = require('nanoid')
 const { ItemModel } = require('../models/items.model');
 const { UserModel } = require('../models/user.model')
 const { PERMISSIONS } = require('../const/permission.const')
 const { ITEMTYPES } = require('../const/itemtypes.const');
 
-
-async function getUserRootFolder(user){
+async function getUserRootFolder(user) {
     try {
-        const rootFolder = await ItemModel.findOne({ownerMailId : user.email, parentFolder : null})
-        return(rootFolder._id)
+        const rootFolder = await ItemModel.findOne({ ownerMailId: user.email, parentFolder: null })
+        if (!rootFolder) {
+            throw new Error("internal server error : This user has no root folder")
+        }
+        return (rootFolder)
     } catch (err) {
         console.log(err)
         throw err
     }
 }
+
 async function createRootFolder(userId) {
     try {
         const storagePath = path.join(defaultDir, userId);
-        const findUser = await UserModel.findOne({_id : userId})
+        const findUser = await UserModel.findOne({ _id: userId })
         const isFileExist = fs.existsSync(storagePath)
         if (isFileExist) {
             throw new Error("Sorry!!! Root Folder already exists");
@@ -39,8 +42,8 @@ async function createRootFolder(userId) {
                 storagePath,
             })
             await newItem.save()
-            const makeDirectory = await fsPromises.mkdir(storagePath)
-            return newItem 
+            await fsPromises.mkdir(storagePath)
+            return newItem
         }
     } catch (err) {
         throw err
@@ -49,20 +52,20 @@ async function createRootFolder(userId) {
 
 async function createNewFolder(payload) {
     try {
-        const { user, folderName, parentFolder } = payload
+        const { user, folderName, parentFolderId } = payload
         const storagePath = path.join(defaultDir, user._id, folderName)
         const newItem = new ItemModel({
             ownerId: user._id,
             name: folderName,
             size: 0,
             ownerMailId: user.email,
-            parentFolder,
+            parentFolder: parentFolderId,
             type: ITEMTYPES.FOLDER,
             extension: null,
-            storagePath: storagePath, 
+            storagePath: storagePath,
         })
         await newItem.save()
-        return newItem 
+        return newItem
     } catch (err) {
         console.log(err)
         throw err
@@ -71,7 +74,7 @@ async function createNewFolder(payload) {
 
 async function uploadFile(payload) {
     try {
-        const { user, file, fileNameOverride, parentFolder } = payload
+        const { user, file, fileNameOverride, parentFolderId } = payload
         //nanoid is created and assigned it as itemNanoName
         const itemNanoName = nanoid()
         //create file path
@@ -86,17 +89,17 @@ async function uploadFile(payload) {
         let fileName = fileNameOverride ? fileNameOverride : file.originalname;
         const extension = fileName.split('.').pop()
         const newItem = new ItemModel({
-            owner: user._id,
+            ownerId: user._id,
             name: fileName,
             size: file.size,
             ownerMailId: user.email,
-            parentFolder: parentFolder,
+            parentFolder: parentFolderId,
             type: ITEMTYPES.FILE,
             extension: extension,
             storagePath: filePath,
         })
         newItem.save()
-        return writeFile,newItem
+        return writeFile, newItem
     } catch (err) {
         console.log(err)
         throw err
@@ -125,7 +128,7 @@ async function viewFolder(payload) {
             const folderData = {
                 type: item.type,
                 id: item._id,
-                userId: item.userId,
+                ownerId: item.ownerId,
                 name: item.name,
                 size: item.size, // TODO: Calculate size in disk
                 ownerMailId: item.ownerMailId,
@@ -147,7 +150,6 @@ async function viewFolder(payload) {
 async function shareFile(payload) {
     try {
         const { userMailId, itemId, permissionValue, owner } = payload
-        console.log(userMailId, itemId, permissionValue, owner)
         const isOwner = await ItemModel.findOne({ _id: itemId, ownerMailId: owner.email })
         if (isOwner) {
             const isExist = await PermissionModel.findOne({ userMailId: userMailId, itemId: itemId })
@@ -158,11 +160,11 @@ async function shareFile(payload) {
                 userMailId,
                 itemId,
                 permission: {
-                    value : permissionValue
+                    value: permissionValue
                 }
             })
             newValue.save()
-            return newValue 
+            return newValue
         }
         throw new Error("Sorry you are not the owner of this file!")
     } catch (err) {
@@ -175,7 +177,7 @@ async function editFile(reqPayload) {
         const { itemId, user, newName } = reqPayload
         const item = await ItemModel.findOne({ _id: itemId })
         if (!item) {
-            throw new Error("Item doesnot exist!!!")
+            throw new Error("Item doesn't exist!!!")
         }
         const permissionPayload = {
             user,
@@ -184,15 +186,15 @@ async function editFile(reqPayload) {
         }
         const isPermitted = await permissionService.isAllowed(permissionPayload)
         if (isPermitted) {
-            if(item.type == ITEMTYPES.FOLDER){
+            if (item.type == ITEMTYPES.FOLDER) {
                 const updateStatus = await ItemModel.updateOne({ _id: item._id }, { $set: { name: newName } })
                 return (updateStatus)
             }
             const newFileName = `${newName}.${item.extension}`
             const updateStatus = await ItemModel.updateOne({ _id: item._id }, { $set: { name: newFileName } })
             return (updateStatus)
-         } else {
-                throw new Error('Sorry!!! Cant update the file')
+        } else {
+            throw new Error('Sorry!!! Cant update the file')
         }
     }
     catch (err) {
@@ -216,14 +218,14 @@ async function downloadFile(payload) {
         }
         const isPermitted = await permissionService.isAllowed(permissionPayload)
         if (isPermitted) {
-                const contents = await fsPromises.readFile(item.storagePath, { encoded: 'utf8' });
-                if(!contents){
-                    throw new Error("Cant Read File!!!")
-                }
-                return (contents)
-            } else {
-                return new Error('You have no permission to download this file')
+            const contents = await fsPromises.readFile(item.storagePath, { encoded: 'utf8' });
+            if (!contents) {
+                throw new Error("Cant Read File!!!")
             }
+            return (contents)
+        } else {
+            return new Error('You have no permission to download this file')
+        }
     } catch (err) {
         throw err
     }
@@ -246,11 +248,11 @@ async function deleteFile(reqPayload) {
         }
         const isPermitted = await permissionService.isAllowed(permissionPayload)
         if (isPermitted) {
-                const deletedFile = await fsPromises.unlink(filePath)
-                console.log('Deleted successfully')
-                const deleteDbDocument = await ItemModel.deleteOne({ _id: fileId })
-                console.log("Deleted from db also")
-                return deletedFile, deleteDbDocument
+            const deletedFile = await fsPromises.unlink(filePath)
+            console.log('Deleted successfully')
+            const deleteDbDocument = await ItemModel.deleteOne({ _id: fileId })
+            console.log("Deleted from db also")
+            return deletedFile, deleteDbDocument
         }
         throw new Error('Sorry !!! you have no permission to delete this file')
     } catch (err) {
@@ -261,28 +263,28 @@ async function deleteItems(fileArray, folderArray) {
     try {
         const files = [...fileArray]
         const folders = [...folderArray]
-    for (let element of files) {
-        const dbContent = await ItemModel.findOne({ _id: element })
-        const deleteFileContent = await fsPromises.unlink(dbContent.storagePath)
-        const deleteDbContent = await ItemModel.deleteOne({ _id: element })
-    }
-    for (let element of folders) {
-        const clearFolder = await ItemModel.deleteOne({ _id: element })
-    }
-    console.log("Folder deleted successfully")
+        for (let element of files) {
+            const dbContent = await ItemModel.findOne({ _id: element })
+            const deleteFileContent = await fsPromises.unlink(dbContent.storagePath)
+            const deleteDbContent = await ItemModel.deleteOne({ _id: element })
+        }
+        for (let element of folders) {
+            const clearFolder = await ItemModel.deleteOne({ _id: element })
+        }
+        console.log("Folder deleted successfully")
     } catch (err) {
         throw err
     }
 }
 
-async function scanFolders(itemId,user) {
+async function scanFolders(itemId, user) {
     try {
         const item = await ItemModel.findOne({ _id: itemId })
         if (!item) {
             throw new Error("item doesnot exist")
         }
         if (item.type !== ITEMTYPES.FOLDER) {
-            throw new Error("item type invaid")
+            throw new Error("item type invalid")
         }
         const permissionPayload = {
             user,
@@ -290,14 +292,12 @@ async function scanFolders(itemId,user) {
             action: PERMISSIONS.DELETE
         }
         const isPermitted = await permissionService.isAllowed(permissionPayload)
-        if(isPermitted){
+        if (isPermitted) {
             let fileArray = []
             let folderArray = []
             let scannedFolders = []
-            if(item.parentFolder !== null){
-                scannedFolders =[itemId]
-            }else{
-                scannedFolders =[]
+            if (item.parentFolder){
+                scannedFolders.push(itemId);
             }
             const items = await ItemModel.find({ parentFolder: itemId })
             items.forEach(element => {
@@ -306,7 +306,7 @@ async function scanFolders(itemId,user) {
                 } else if (element.type === ITEMTYPES.FOLDER) {
                     folderArray.push(element._id)
                 } else {
-                    throw new Error('Sorry !!! cannot list files')
+                    throw new Error('Sorry!!! Cannot list files')
                 }
             })
             while (folderArray.length > 0) {
@@ -314,16 +314,26 @@ async function scanFolders(itemId,user) {
                 const recursiveCall = await scanFolders(childId);
                 fileArray.push(...recursiveCall.fileArray);
                 folderArray.push(...recursiveCall.folderArray);
-                scannedFolders.push(...recursiveCall.scannedFolders)
+                scannedFolders.push(...recursiveCall.scannedFolders);
             }
             return { fileArray, folderArray, scannedFolders }
         }
-        throw new Error("sorry you have no permission to delete this folder")
+        throw new Error("Sorry you have no permission to delete this folder")
     } catch (err) {
         console.log(err)
         throw err
     }
 }
 module.exports = {
-    createRootFolder, createNewFolder, uploadFile, downloadFile, shareFile, editFile, deleteFile, viewFolder, scanFolders, deleteItems, getUserRootFolder
+    createRootFolder,
+    createNewFolder,
+    uploadFile,
+    downloadFile,
+    shareFile,
+    editFile,
+    deleteFile,
+    viewFolder,
+    scanFolders,
+    deleteItems,
+    getUserRootFolder
 }

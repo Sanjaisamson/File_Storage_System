@@ -2,76 +2,101 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const bcrypt = require('bcrypt');
 const { UserModel } = require('../models/user.model')
-const { RefreshTokenModel }= require('../models/refreshToken.Model')
+const { RefreshTokenModel } = require('../models/refreshToken.Model')
+const { authConfig } = require('../config/authConfig')
 const itemServices = require('../services/items.services')
 
 
-async function newUser(signupData){
+async function newUser(signupData) {
     try {
-        const {username, email,  password } = signupData
+        const { userName, email, password } = signupData
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
-        const findUser = await UserModel.findOne({email : email})
-        if(!findUser){
+        const findUser = await UserModel.findOne({ email: email })
+        if (!findUser) {
             const user = await UserModel.create({
-                name : username,
-                email : email,
-                password : hashedPassword
+                name: userName,
+                email: email,
+                password: hashedPassword
             })
             const rootFolder = await itemServices.createRootFolder(user._id)
-            return {user,rootFolder}
+            return { user, rootFolder }
         }
-        throw new Error("sorry user with same email were existed")   
+        throw new Error("sorry user with same email were existed")
     } catch (err) {
         console.log(err)
         throw err
     }
 }
 
-async function generateTokens(tokenPayload){
+async function userLogin(username, password) {
     try {
-        const userId  = tokenPayload
-            const accessToken = jwt.sign(
-            {userId},
-            process.env.ACCESS_TOKEN_SECRET,
-            {expiresIn : "10m"}
+        const user = await UserModel.findOne({ email: username })
+        if (!user) {
+            throw new Error("User not found!!..")
+        }
+        const isVerified = await bcrypt.compare(password, user.password)
+        if (!isVerified) {
+            throw new Error("Failed to Authenticate")
+        }
+        return user._id
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
+
+async function generateTokens(userId) {
+    try {
+        const accessToken = jwt.sign(
+            { userId },
+             authConfig.secrets.accessToken,
+            { expiresIn: authConfig.tokenExpiry.accessTokenExp }
         )
-            const refreshToken = jwt.sign(
-            {userId},
-            process.env.REFRESH_TOKEN_SECRET
+        const refreshToken = jwt.sign(
+            { userId },
+             authConfig.secrets.refreshToken,
+            { expiresIn: authConfig.tokenExpiry.refreshTokenExp }
         )
-        const findUser = await RefreshTokenModel.findOne({userId})
-        if(!findUser){
+        return { accessToken: accessToken, refreshToken: refreshToken }
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
+
+async function saveTokens(userId, refreshToken){
+    try {
+        const findUser = await RefreshTokenModel.findOne({ userId })
+        if (!findUser) {
             const saveToken = await new RefreshTokenModel({
-                userId : userId,
-                refreshToken : refreshToken,
+                userId: userId,
+                refreshToken: refreshToken,
             })
-            console.log("the user not existed so created")
+            console.log("The user not existed so created...")
             await saveToken.save();
-        }else{
-            const saveNewToken = await RefreshTokenModel.findOneAndUpdate(
-                {userId : userId },
-                {refreshToken : refreshToken },
-                {upsert: true, new: true}
+        } else {
+            const updateToken = await RefreshTokenModel.findOneAndUpdate(
+                { userId: userId },
+                { refreshToken: refreshToken },
+                { upsert: true, new: true }
             )
-            console.log("the user is existed so token is replaced")
-            await saveNewToken.save();
+            console.log("The user is existed so token is replaced...")
+            await updateToken.save();
         }
-    return {accessToken: accessToken,refreshToken: refreshToken}
     } catch (err) {
         console.log(err)
         throw err
     }
 }
 
-async function logoutUser(logoutPayload){
+async function userLogout(user) {
     try {
-        const { user } = logoutPayload
-        const refreshTokens = await RefreshTokenModel.deleteOne({userId : user._id})
-        if(!refreshTokens){
+        const refreshToken = await RefreshTokenModel.deleteOne({ userId: user._id })
+        if (!refreshToken) {
             throw err
         }
-        return (refreshTokens)
+        return (refreshToken)
     } catch (err) {
         console.log(err)
         throw err
@@ -79,5 +104,9 @@ async function logoutUser(logoutPayload){
 }
 
 module.exports = {
-    newUser,logoutUser,generateTokens
+    newUser,
+    userLogout, 
+    generateTokens, 
+    userLogin,
+    saveTokens
 }

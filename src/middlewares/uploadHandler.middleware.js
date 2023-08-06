@@ -4,10 +4,10 @@ const allowedFileTypes = require('../config/allowedFileTypes')
 
 function customFileFilter(_req, file, cb) {
     const fileTypeCheck = allowedFileTypes.includes(file.mimetype)
-    if (fileTypeCheck === true) {
+    if (fileTypeCheck) {
         cb(null, true)
     } else {
-        cb(new Error('file is not acceptable'), false)
+        cb(new Error('File is not acceptable'), false)
     }
 }
 

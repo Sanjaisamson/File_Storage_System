@@ -1,12 +1,10 @@
-const httpErrors = require('http-errors')
-
 
 function errorHandler(err, req, res, next){
     if(err){
-        const error = err.status || 407
+        const error = err.status || 500
         res.status(error);
         res.send({
-            errorFound : {
+            error : {
                 status : err.status,
                 message : err.message
             }

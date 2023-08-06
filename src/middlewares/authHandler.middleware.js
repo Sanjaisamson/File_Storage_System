@@ -1,44 +1,49 @@
-
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const httpErrors = require('http-errors')
-const {RefreshTokenModel} = require('../models/refreshToken.Model')
-const {UserModel} = require('../models/user.model')
+const { RefreshTokenModel } = require('../models/refreshToken.Model')
+const { UserModel } = require('../models/user.model')
+const { authConfig } = require('../config/authConfig')
+const userServices = require('../services/userServices')
 
-async function isAuthenticated(req,res,next){
+async function isAuthenticated(req, res, next) {
     try {
         const authHeader = req.headers['authorization'];
         const bearerLessToken = authHeader.split(' ')[1]
-        const authVerify = jwt.verify(bearerLessToken, process.env.ACCESS_TOKEN_SECRET)
-        const userId = authVerify.userId
-        const authenticatedUser = await UserModel.findOne({_id : userId})
+        const authVerify = jwt.verify(bearerLessToken, authConfig.secrets.accessToken)
+        const authenticatedUser = await UserModel.findOne({ _id: authVerify.userId })
+        if (!authenticatedUser) {
+            throw new Error("Invalid User")
+        }
         req.user = authenticatedUser
         next()
     } catch (err) {
         console.log(err)
-        const authError = httpErrors(401,"Unauthorized!!! authentication failed!")
-        next(authError)
+        next(httpErrors(401, "Unauthorized!!! authentication failed!"))
     }
 }
-async function refreshTokenVerify(req,res,next){
+async function verifyRefreshToken(req, res, next) {
     try {
-        const userId = req.query.userId
-        const getrefreshToken = await RefreshTokenModel.findOne({userId: userId})
-        const refreshToken = getrefreshToken.refreshToken
-        const tokenVerify = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-        const accessToken = jwt.sign(
-            {userId},
-            process.env.ACCESS_TOKEN_SECRET,
-            {expiresIn : '1h'}
-        )
-        res.json({accessToken})
+        const refreshToken = req.cookies.rtoken
+        const decodedToken = jwt.verify(refreshToken, authConfig.secrets.refreshToken)
+        const isUserExist = await RefreshTokenModel.findOne({
+            userId: decodedToken.userId,
+            refreshToken: refreshToken
+        })
+        if (!isUserExist) {
+            throw new Error("Unauthorized!!! User not found!!!")
+        }
+        const generateToken = await userServices.generateTokens(decodedToken.userId)
+        return res.json({
+            accessToken: generateToken.accessToken
+        });
     } catch (err) {
-        console.log(err)
-        const refreshTokenError = httpErrors(402,"refreshToken not match!")
-        next(refreshTokenError)
+        console.log(err);
+        next(httpErrors(401, "Token verification failed!!!"));
     }
 }
 
 module.exports = {
-    isAuthenticated, refreshTokenVerify
+    isAuthenticated,
+    verifyRefreshToken
 }

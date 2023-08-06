@@ -12,28 +12,23 @@ Content-Type: application/json
 
 ###
 //refresh-token
-POST http://localhost:3500/user/refresh?userId=816560bb-bfdd-4c65-b948-37163818bc99
-###
-
-###
-//get user
-GET http://localhost:3500/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYjY4ZWJmZi03Yzg5LTQ4ODMtODhlMC00ZGRhMDc2NDU0MzkiLCJpYXQiOjE2OTA0NDg3ODksImV4cCI6MTY5MDQ1MjM4OX0.8-y3q-rUkamx9dFxuv28t91v5iovmjjixEdLsEIhFMU
+POST http://localhost:3500/user/refresh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MTY1NjBiYi1iZmRkLTRjNjUtYjk0OC0zNzE2MzgxOGJjOTkiLCJpYXQiOjE2OTEwNTI4MjgsImV4cCI6MTY5MTA1MzQyOH0.cgGctqCkOZ9SR136dnnoiE2chWPqhW_SlgH_rXr34i0
 ###
 
 ###
 //generate tokens
-POST http://localhost:3500/user/login?userId=816560bb-bfdd-4c65-b948-37163818bc99
+POST http://localhost:3500/user/login
 Content-Type: application/json
 
 {
-    "username" : "jeevan",
-    "password" : "jeevan345"
+    "username" : "akhil@gmail",
+    "password" : "akhil345"
 }
 ###
 
 ###
 //logOut user
 GET http://localhost:3500/user/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZmQ4YzMwZi03N2FiLTRhZjMtOGYzMC0yZWU3YzkxNDlhYmYiLCJpYXQiOjE2OTAzOTg4MzEsImV4cCI6MTY5MDQwMjQzMX0.ZD15kxOGLzxG0gGd6GSkZN1UxWWzi6fho7gQXb2l8SE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MTY1NjBiYi1iZmRkLTRjNjUtYjk0OC0zNzE2MzgxOGJjOTkiLCJpYXQiOjE2OTEwNTI4MjgsImV4cCI6MTY5MTA1MzQyOH0.cgGctqCkOZ9SR136dnnoiE2chWPqhW_SlgH_rXr34i0
 ###
